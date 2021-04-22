@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 import {
   Container,
@@ -14,12 +14,17 @@ interface ISlideProps {
 
 const Slide: React.FC<ISlideProps> = ({ images }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [currentIntervalId, setCurrentIntervalId] = useState<any>();
 
-  const nextContent = (): void => {
-    setCurrentIndex((currentIndex) => (currentIndex + 1) % images.length);
-  };
+  const memoizedNextContent = useCallback(() => {
+    const nextContent = (): void => {
+      setCurrentIndex((currentIndex) => (currentIndex + 1) % images.length);
+    };
+    nextContent();
+  }, [images.length]);
 
   const previousContent = (): void => {
+    clearInterval(currentIntervalId);
     setCurrentIndex((currentIndex) => {
       if (currentIndex - 1 < 0) {
         return images.length - 1;
@@ -29,12 +34,27 @@ const Slide: React.FC<ISlideProps> = ({ images }) => {
     });
   };
 
+  useEffect(() => {
+    const intervalId = setInterval(memoizedNextContent, 1500);
+    setCurrentIntervalId(intervalId);
+    return function clearUp() {
+      clearInterval(intervalId);
+    };
+  }, [memoizedNextContent]);
+
   return (
     <Container>
       <SlideContainer>
         <Button onClick={previousContent}>Back</Button>
-        <img src={images[currentIndex]} />
-        <Button onClick={nextContent}>Next</Button>
+        <img src={images[currentIndex]} alt=" " />
+        <Button
+          onClick={() => {
+            clearInterval(currentIntervalId);
+            memoizedNextContent();
+          }}
+        >
+          Next
+        </Button>
       </SlideContainer>
       <SlideMarkersContainer>
         {images.map((value, index) => (

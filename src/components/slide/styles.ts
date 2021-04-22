@@ -26,18 +26,22 @@ export const Button = styled.button`
   }
 `;
 
+export const SlideMarkers = styled.div<IMarker>`
+  background-color: ${(props) =>
+    props.index === props.currentIndex ? "green" : "#fff"};
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 100%;
+  margin-right: 1rem;
+`;
+
 export const SlideMarkersContainer = styled.div`
   display: flex;
   justify-content: center;
 
   margin-top: 2rem;
-`;
 
-export const SlideMarkers = styled.div<IMarker>`
-  background-color: ${(props) =>
-    props.index === props.currentIndex ? "#000" : "#fff"};
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 100%;
-  margin-right: 1rem;
+  & ${SlideMarkers}:last-child {
+    margin-right: 0;
+  }
 `;

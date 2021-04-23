@@ -45,9 +45,12 @@ const Slide: React.FC<ISlideProps> = ({ images }) => {
   return (
     <Container>
       <SlideContainer>
-        <Button onClick={previousContent}>Back</Button>
+        <Button buttonDirection="back" onClick={previousContent}>
+          Back
+        </Button>
         <img src={images[currentIndex]} alt=" " />
         <Button
+          buttonDirection="next"
           onClick={() => {
             clearInterval(currentIntervalId);
             memoizedNextContent();

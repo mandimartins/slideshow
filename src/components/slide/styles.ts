@@ -5,21 +5,38 @@ type IMarker = {
   currentIndex: number;
 };
 
-export const Container = styled.div`
-  width: 100%;
-`;
+type IButton = {
+  buttonDirection: string;
+};
+
+export const Container = styled.div``;
 
 export const SlideContainer = styled.div`
-  width: 100%;
-  display: flex;
+  position: relative;
 
-  justify-content: space-between;
+  img {
+    max-width: 100%;
+    display: block;
+    height: auto;
+  }
 `;
 
-export const Button = styled.button`
+export const Button = styled.button<IButton>`
+  position: absolute;
+
+  transform: translate(0, -50%);
+
+  top: 50%;
+
+  right: ${(props) => props.buttonDirection === "next" && 0};
+
+  left: ${(props) => props.buttonDirection === "left" && 0};
+
   background-color: #fff;
   font-size: 2rem;
   padding: 2rem;
+
+  cursor: pointer;
 
   :hover {
     opacity: 0.7;
@@ -28,7 +45,7 @@ export const Button = styled.button`
 
 export const SlideMarkers = styled.div<IMarker>`
   background-color: ${(props) =>
-    props.index === props.currentIndex ? "green" : "#fff"};
+    props.index === props.currentIndex ? "dodgerblue" : "#fff"};
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 100%;
